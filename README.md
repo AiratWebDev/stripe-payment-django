@@ -8,9 +8,9 @@
 
 ### Стэк разработки:
 • Python 3.11  
-• Django  
+• Django 4.1.6 
 • Docker  
-• Nginx: latest  
+• Nginx latest  
 
 ### Запуск
 
