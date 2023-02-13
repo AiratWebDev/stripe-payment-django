@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Buy item 1</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+<div class="content">
+    <div class="info">
+        <h1>Товары</h1>
+        {% for item in item_info %}
+            <li>
+                <a href="/item/{{ item.pk }}">{{ item.name }}</a>
+            </li>
+            <br>
+        {% endfor %}
+    </div>
+</div>
+</body>
+
+</html>

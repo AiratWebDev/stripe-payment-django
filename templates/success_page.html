@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Спасибо за покупку</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+<div class="content">
+    <div class="info">
+        <h1>Спасибо за покупку</h1>
+        <p>Ваша покупка: {{ name }} </p>
+        <p>Количество товара: {{ quantity }} </p>
+        <p>Стоимость: <b>{{ price }} {{ currency }}</b></p>
+    </div>
+</div>
+</body>
+</html>

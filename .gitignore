@@ -1,0 +1,10 @@
+# created by virtualenv automatically
+
+/.env
+/test.txt
+/Lib/
+/Scripts/
+/share/
+/pyvenv.cfg
+/db.sqlite3
+/.idea
