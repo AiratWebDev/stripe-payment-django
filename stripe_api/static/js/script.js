@@ -11,6 +11,7 @@ window.onload = () => {
                 document.getElementById("buy-button").addEventListener('click',
                     (event) => {
                         console.log('eventListener_click')
+
                         let quantity = document.getElementById('quantity').value
                         const pk = window.location.pathname.replace(/[^0-9]/g, '');
 

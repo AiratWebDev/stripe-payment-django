@@ -9,12 +9,14 @@ import json
 
 
 class ItemView(DetailView):
+    """View class for every single item"""
     template_name = 'item_page.html'
     model = Item
     context_object_name = 'item_info'
 
 
 class ItemsView(ListView):
+    """View class for main page with list of items"""
     template_name = 'items_page.html'
     model = Item
     context_object_name = 'item_info'
@@ -22,6 +24,7 @@ class ItemsView(ListView):
 
 @csrf_exempt
 def get_key(request):
+    """View for publish key requesting"""
     if request.method == 'GET':
         stripe_publish_key = {'stripePublishableKey': settings.STRIPE_PUBLISHABLE_KEY}
         return JsonResponse(stripe_publish_key, safe=False)
@@ -29,6 +32,7 @@ def get_key(request):
 
 @csrf_exempt
 def create_checkout_session(request, pk):
+    """View for creating new checkout session"""
     if request.method == 'POST':
         main_url = 'http://127.0.0.1:8000/'
 
@@ -71,6 +75,7 @@ def create_checkout_session(request, pk):
 
 
 def success_view(request):
+    """View for success page and creating new order"""
     session_id = request.GET.get('session_id')
     pk = request.GET.get('pk')
     quantity = request.GET.get('quantity')
@@ -86,8 +91,3 @@ def success_view(request):
         return render(request, 'success_page.html', context=data)
     else:
         raise Exception('Нет параметров')
-
-
-def test_view(request):
-    obj = Item.objects.get(pk=2)
-    return JsonResponse({'name': obj.name, 'price': str(obj.price)[:-3]})

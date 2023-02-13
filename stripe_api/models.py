@@ -10,6 +10,7 @@ CURRENCY = [
 
 
 class Discount(models.Model):
+    """Model class for discounts"""
     size = models.PositiveIntegerField(default=0, verbose_name='Скидка')
 
     class Meta:
@@ -21,6 +22,7 @@ class Discount(models.Model):
 
 
 class Tax(models.Model):
+    """Model class for taxes"""
     tax_size = models.PositiveIntegerField(default=10, verbose_name='Налог')
 
     class Meta:
@@ -32,6 +34,7 @@ class Tax(models.Model):
 
 
 class Item(models.Model):
+    """Model class for products"""
     name = models.CharField(max_length=50, verbose_name='Имя')
     description = models.CharField(max_length=255, verbose_name='Описание')
     price = models.DecimalField(max_digits=7, decimal_places=2, verbose_name='Цена')
@@ -55,6 +58,7 @@ class Item(models.Model):
 
 
 class Order(models.Model):
+    """Model class for orders"""
     id = models.AutoField(primary_key=True, verbose_name='pk')
     order = models.ForeignKey(Item, on_delete=models.PROTECT, verbose_name='Покупка', null=True)
     quantity = models.PositiveIntegerField(default=1, verbose_name='Количество товара')
