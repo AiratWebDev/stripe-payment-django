@@ -15,9 +15,10 @@ class ItemView(DetailView):
     context_object_name = 'item_info'
 
 
-class ItemsView(ListView):
+# ------ Session Checkout Views ------
+class HomePageView(ListView):
     """View class for main page with list of items"""
-    template_name = 'items_page.html'
+    template_name = 'home_page.html'
     model = Item
     context_object_name = 'item_info'
 
@@ -34,7 +35,7 @@ def get_key(request):
 def create_checkout_session(request, pk):
     """View for creating new checkout session"""
     if request.method == 'POST':
-        main_url = 'http://127.0.0.1:8000/'
+        main_url = f'http://{request.get_host()}/'
 
         stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -59,7 +60,7 @@ def create_checkout_session(request, pk):
                     'product_data': {
                         'name': item.name,
                     },
-                    'unit_amount': round(item.price)*100,
+                    'unit_amount': round(item.price) * 100,
                 },
                 'quantity': quantity if quantity != '0' else '1',
                 'tax_rates': [tax_info['id']],
@@ -91,3 +92,66 @@ def success_view(request):
         return render(request, 'success_page.html', context=data)
     else:
         raise Exception('Нет параметров')
+
+
+# ------ Payment Intent Views ------
+class ItemPaymentIntentView(ListView):
+    """Class view for item with payment intent"""
+    template_name = 'payment_intent_item.html'
+    model = Item
+    context_object_name = 'item_info'
+
+
+class PaymentIntentView(ListView):
+    """Class view for payment intent feature"""
+    template_name = 'payment_intent.html'
+    model = Item
+    context_object_name = 'item_info'
+
+
+def get_currency_and_price(quantity: str) -> list:
+    """Function to get price and currency for payment intent item"""
+    item = Item.objects.get(pk=3)
+    currency = item.currency
+    price = round(item.price)
+    total_price = price * int(quantity)
+    info = [total_price, currency]
+    return info
+
+
+@csrf_exempt
+def create_payment_intent(request):
+    """View for creating payment intent"""
+    if request.method == 'POST':
+
+        try:
+            stripe.api_key = settings.STRIPE_SECRET_KEY
+            data: dict = json.loads(request.body)
+
+            quantity: str = data['quantity']
+            info: list = get_currency_and_price(quantity)
+
+            intent: dict = stripe.PaymentIntent.create(
+                amount=info[0],
+                currency=info[1],
+            )
+
+            return JsonResponse({
+                'clientSecret': intent['client_secret']
+            })
+        except Exception:
+            return JsonResponse({'error': str(Exception)})
+
+
+def success_intent_view(request):
+    """View for success page for payment intent feature"""
+    quantity = request.GET.get('quantity')
+    item = Item.objects.get(pk=3)
+    Order.objects.create(order=item, quantity=quantity, price=item.price, currency=item.currency)
+    data = {
+        'name': item.name,
+        'price': item.price,
+        'quantity': quantity,
+        'currency': item.currency,
+    }
+    return render(request, 'success_page.html', context=data)

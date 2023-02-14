@@ -9,13 +9,24 @@
 <body>
 <div class="content">
     <div class="info">
-        <h1>Товары</h1>
+        <h2>Товары с оплатой по сессиям</h2>
         {% for item in item_info %}
             <li>
                 <a href="/item/{{ item.pk }}">{{ item.name }}</a>
             </li>
             <br>
         {% endfor %}
+
+        <h2>Пример с PaymentIntent</h2>
+        <li>
+            <a href="/payment-intent-item">{{ item_info.last.name }}</a>
+        </li>
+        <br>
+        <div class="github">
+
+            <a href="https://github.com/AiratWebDev/stripe-payment-django" target="_blank">Ссылка на GitHub проекта</a>
+
+        </div>
     </div>
 </div>
 </body>

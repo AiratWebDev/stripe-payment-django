@@ -14,11 +14,19 @@ h1, p, label {
 
 a {
     text-decoration: none;
-    color: #9191e6;
+    color: #7c7ce6;
 }
 
 .price {
     font-weight: bold;
+}
+
+.github, .to-main {
+    text-align: center;
+    padding: 10px;
+    margin: 45px 0;
+    background-color: #ffffff;
+    border-radius: 6px;
 }
 
 #quantity {

@@ -1,0 +1,24 @@
+version: "3.7"
+
+services:
+  web:
+    container_name: "web"
+    image: nginx:latest
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./etc/letsencrypt/live/1255351-cc91283.tw1.ru/fullchain.pem:/etc/letsencrypt/live/1255351-cc91283.tw1.ru/fullchain.pem
+      - ./etc/letsencrypt/live/1255351-cc91283.tw1.ru/privkey.pem:/etc/letsencrypt/live/1255351-cc91283.tw1.ru/privkey.pem
+
+  app:
+    container_name: "app"
+    image: airat696/stripe-payment-django:0.6
+    build:
+      context: . #на каком уровне находится Dockerfile
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
